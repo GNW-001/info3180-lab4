@@ -4,9 +4,9 @@
 <h1 class="page-header">Images</h1>
 
 {% include 'flash_messages.html' %}
-<ul>
+<ul class="grid-container">
     {% for filename in lisst %}
-        <li><img src= "{{url_for('get_image', filename=filename)}}" /></li>
+        <li class="grid-item"><img src= "{{url_for('get_image', filename=filename)}}" /></li>
 {% endfor %}
 </ul>
 
