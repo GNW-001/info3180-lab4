@@ -13,6 +13,8 @@ from werkzeug.utils import secure_filename
 ###
 # Routing for your application.
 ###
+from app.forms import UploadForm
+
 
 @app.route('/')
 def home():
@@ -32,15 +34,20 @@ def upload():
         abort(401)
 
     # Instantiate your form class
-
+    filefolder = './uploads'
+    form = UploadForm()
     # Validate file upload on submit
     if request.method == 'POST':
         # Get file data and save to your uploads folder
+        if form.validate_on_submit():
+            file = form.upload.data
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        flash('File Saved', 'success')
+            flash('File Saved', 'success')
         return redirect(url_for('home'))
 
-    return render_template('upload.html')
+    return render_template('upload.html', form=form)
 
 
 @app.route('/login', methods=['POST', 'GET'])
